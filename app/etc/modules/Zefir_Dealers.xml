@@ -1,0 +1,8 @@
+<config>
+  <modules>
+    <Zefir_Dealers>
+      <active>true</active>
+      <codePool>community</codePool>
+    </Zefir_Dealers>
+  </modules>
+</config>

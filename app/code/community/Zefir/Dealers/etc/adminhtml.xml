@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+  <menu>
+    <sales>
+      <children>
+        <dealers translate="title" module="zefir_dealers">
+          <title>Dealers</title>
+          <action>adminhtml/dealers</action>
+          <sort_order>100</sort_order>
+        </dealers>
+      </children>
+    </sales>
+  </menu>
+  <acl>
+    <resources>
+      <all>
+        <title>Allow Everything</title>
+      </all>
+      <admin>
+        <children>
+          <sales>
+            <children>
+              <dealers translate="title">
+                <title>Dealers</title>
+                <sort_order>100</sort_order>
+              </dealers>
+            </children>
+          </sales>
+        </children>
+      </admin>
+    </resources>
+  </acl>
+</config>
