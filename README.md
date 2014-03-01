@@ -1,7 +1,7 @@
 magento-dealers
 ===============
 
-Magento Dealers is a set of magento extensions provides functionality to create and manage dealers.
+Magento Dealers is a set of magento extensions that provide functionality to create and manage dealers.
 
 At current stage modules are in early developer phase and there is no guarantee of backwards compatibility.
 
