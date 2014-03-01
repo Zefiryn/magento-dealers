@@ -43,19 +43,17 @@
       </zefir_locator>
     </blocks>    
   </global>
-  <geoservices>
-    <children>
-      <geonames translate="label" module="zefir_locator">
-        <label>Geonames.org</label>
-      </geonames>
-      <openstreet translate="label" module="zefir_locator">
-        <label>Openstreetmap.org</label>
-      </openstreet>
-      <google translate="label" module="zefir_locator">
-        <label>Google Maps</label>
-      </google>
-    </children>
-  </geoservices>
+  <admin>
+    <routers>
+      <adminhtml>
+        <args>
+          <modules>
+            <Zefir_DealerLocator after="Mage_Adminhtml">Zefir_DealerLocator_Adminhtml</Zefir_DealerLocator>
+          </modules>
+        </args>
+      </adminhtml>
+    </routers>
+  </admin>
   <adminhtml>
     <events>
       <zefir_dealer_prepare_form_fields>
@@ -76,6 +74,28 @@
           </add_geolocation_to_dealer>
         </observers>
       </dealer_save_before>
+      <zefir_dealers_grid_prepare_massaction>
+        <observers>
+          <add_geolocation_massaction>
+            <type>singleton</type>
+            <class>zefir_locator/observer</class>
+            <method>addMassactionToGrid</method>
+          </add_geolocation_massaction>
+        </observers>
+      </zefir_dealers_grid_prepare_massaction>
     </events>
-  </adminhtml>
+  </adminhtml>  
+  <geoservices>
+    <children>
+      <geonames translate="label" module="zefir_locator">
+        <label>Geonames.org</label>
+      </geonames>
+      <openstreet translate="label" module="zefir_locator">
+        <label>Openstreetmap.org</label>
+      </openstreet>
+      <google translate="label" module="zefir_locator">
+        <label>Google Maps</label>
+      </google>
+    </children>
+  </geoservices>
 </config>

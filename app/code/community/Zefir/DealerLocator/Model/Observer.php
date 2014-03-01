@@ -88,4 +88,21 @@ class Zefir_DealerLocator_Model_Observer {
             || $dealer->dataHasChangedFor('country'));
     }
   }
+  
+  /**
+   * Add recalculate location mass action
+   * 
+   * @param Varien_Event_Observer $observer
+   * @return \Zefir_DealerLocator_Model_Observer
+   */
+  public function addMassactionToGrid(Varien_Event_Observer $observer) {
+    if (Mage::helper('zefir_locator')->isLocalizatorEnabled()) {
+      $grid = $observer->getEvent()->getGrid();
+      $grid->getMassactionBlock()->addItem('refresh_geo_location', array(
+        'label'=> Mage::helper('tax')->__('Refresh Geo Location'),
+        'url'  => $grid->getUrl('*/dealerlocation/massRefresh', array('' => ''))
+      ));
+    }
+    return $this;
+  }
 }
