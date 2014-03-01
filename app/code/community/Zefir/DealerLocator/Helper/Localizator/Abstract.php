@@ -36,13 +36,17 @@ class Zefir_DealerLocator_Helper_Localizator_Abstract extends Mage_Core_Helper_A
   public function makeRequest() {
     $client = new Zend_Http_Client();
     $client->setUri($this->_getUri());
-    $client->setMethod($this->_getMethod());    
+    $client->setMethod($this->_getMethod());
     foreach($this->_getParameters() as $key => $val) {
-      if ($client->getMethod() == Zend_Http_Client::GET) {
-        $client->setParameterGet($key, $val);
-      }
-      if ($client->getMethod() == Zend_Http_Client::POST) {
-        $client->setParameterPost($key, $val);
+      switch($this->_getMethod()) {
+        case Zend_Http_Client::POST:
+          $client->setParameterPost($key, $val);
+        break;
+              
+        case Zend_Http_Client::GET:
+        default:
+          $client->setParameterGet($key, $val);
+        break;
       }
     }
     
