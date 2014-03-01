@@ -20,5 +20,5 @@ class Zefir_Dealers_Model_Dealer extends Mage_Core_Model_Abstract {
   public function getId() {
     return $this->getDealerId();    
   }
-  
+    
 }

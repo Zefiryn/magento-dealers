@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author  Zefiryn
  * @package Zefir_Dealers
@@ -6,13 +7,22 @@
  */
 class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form {
 
+  public function __construct() {
+    parent::__construct();
+    $this->setTemplate('zefir/dealers/tab/addressForm.phtml');
+  }
+
+  public function getRegionsUrl() {
+    return $this->getUrl('*/json/countryRegion');
+  }
+
   protected function _prepareForm() {
     $form = new Varien_Data_Form();
     $this->setForm($form);
     $fieldset = $form->addFieldset('general_form', array('legend' => Mage::helper('zefir_dealers')->__('General')));
 
     $fieldset->addField('dealer_id', 'hidden', array('name' => 'dealer_id',));
-    
+
     $fieldset->addField('dealer_code', 'text', array(
         'label' => Mage::helper('zefir_dealers')->__('Dealer Code'),
         'class' => 'required-entry',
@@ -32,7 +42,50 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Form extends Mage_Adminhtml_
         'required' => true,
         'options' => Mage::getSingleton('zefir_dealers/source_status')->toOptionHash()
     ));
-    
+
+    $addresFieldset = $form->addFieldset('address_form', array('legend' => Mage::helper('zefir_dealers')->__('Address')));
+    $addresFieldset->addField('street', 'text', array(
+        'label' => Mage::helper('zefir_dealers')->__('Street'),
+        'class' => '',
+        'required' => true,
+        'name' => 'street',
+    ));
+    $addresFieldset->addField('city', 'text', array(
+        'label' => Mage::helper('zefir_dealers')->__('City'),
+        'class' => '',
+        'required' => true,
+        'name' => 'city',
+    ));
+    $addresFieldset->addField('zipcode', 'text', array(
+        'label' => Mage::helper('zefir_dealers')->__('Zip Code'),
+        'class' => '',
+        'required' => true,
+        'name' => 'zipcode',
+    ));
+    $addresFieldset->addField('region', 'text', array(
+        'label' => Mage::helper('zefir_dealers')->__('State/Province'),
+        'class' => '',
+        'required' => true,
+        'renderer' => 'zefir_dealers/renderer_region',
+        'name' => 'region',
+    ));
+    $addresFieldset->addField('region_id', 'hidden', array(
+        'label' => Mage::helper('zefir_dealers')->__('State/Province'),
+        'class' => '',
+        'required' => false,
+        'name' => 'region_id',
+    ));
+    $addresFieldset->addField('country_id', 'select', array(
+        'label' => Mage::helper('zefir_dealers')->__('Country'),
+        'class' => 'input-text required-entry countries',
+        'required' => true,
+        'name' => 'country_id',
+        'values' => Mage::getResourceModel('directory/country_collection')->toOptionArray()
+    ));
+
+    //allow other modules add fields to the form
+    Mage::dispatchEvent('zefir_dealer_prepare_form_fields', array('form' => $this->getForm()));
+
     if (Mage::getSingleton('adminhtml/session')->getDealerData()) {
       $form->setValues(Mage::getSingleton('adminhtml/session')->getDealerData());
     } 
@@ -46,5 +99,22 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Form extends Mage_Adminhtml_
 
     return parent::_prepareForm();
   }
+  
+  /**
+     * Return JSON object with countries associated to possible websites
+     *
+     * @return string
+     */
+    public function getDefaultCountriesJson() {
+        $websites = Mage::getSingleton('adminhtml/system_store')->getWebsiteValuesForForm(false, true);
+        $result = array();
+        foreach ($websites as $website) {
+            $result[$website['value']] = Mage::app()->getWebsite($website['value'])->getConfig(
+                Mage_Core_Helper_Data::XML_PATH_DEFAULT_COUNTRY
+            );
+        }
+
+        return Mage::helper('core')->jsonEncode($result);
+    }
 
 }

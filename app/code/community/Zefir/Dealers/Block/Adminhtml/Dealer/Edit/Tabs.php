@@ -20,6 +20,9 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tabs extends Mage_Adminhtml_Bloc
         'content' => $this->getLayout()->createBlock('zefir_dealers/adminhtml_dealer_edit_tab_form')->toHtml(),
     ));
 
+    //allow other modules add tabs to the edit page
+    Mage::dispatchEvent('zefir_dealer_prepare_form_tabs', array('block' => $this));
+    
     return parent::_beforeToHtml();
   }
 

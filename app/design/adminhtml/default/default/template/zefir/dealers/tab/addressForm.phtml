@@ -1,0 +1,167 @@
+<?php
+echo $this->getForm()->getHtml();
+?>
+<script type="text/javascript">
+//<![CDATA[
+
+  var addressesModel = Class.create();
+  addressesModel.prototype = {
+    initialize: function() {
+      this.defaultCountries = <?php echo $this->getDefaultCountriesJson(); ?>;
+      this.loader = new varienLoader(true);
+      this.regionsUrl = '<?php echo $this->getRegionsUrl() ?>';
+      this.requiredStateForCountries = <?php echo $this->helper('directory')->getCountriesWithStatesRequired(true) ?>;
+      this.showAllRegions = <?php echo (string) $this->helper('directory')->getShowNonRequiredState() ? 1 : 0; ?>;
+      this.bindCountryRegionRelation();
+    },
+    bindCountryRegionRelation: function() {
+      var countryElements = $$('.countries');
+      for (var i = 0; i <= countryElements.length; i++) {
+        if (countryElements[i]) {
+          if (!countryElements[i].bindRegions) {
+            Event.observe(countryElements[i], 'change', this.reloadRegionField.bind(this));
+            countryElements[i].bindRegions = true;
+          }
+        }
+      }
+    },
+    reloadRegionField: function(event) {
+      var countryElement = Event.element(event);
+      if (countryElement.id) {
+        var regionElement = $(countryElement.id.replace(/country_id/, 'region'));
+        if (regionElement) {
+          this.regionElement = regionElement;
+          this.countryEl = countryElement;
+          if (countryElement.value) {
+            var url = this.regionsUrl + 'parent/' + countryElement.value;
+            this.loader.load(url, {}, this.refreshRegionField.bind(this));
+          } else {
+            // Set empty text field in region
+            this.refreshRegionField('[]');
+          }
+        }
+        // set Zip optional/required
+        varienGlobalEvents.fireEvent("address_country_changed", countryElement);
+      }
+    },
+    // serverResponse is either string with server response, or object to force some paricular data setting
+    refreshRegionField: function(serverResponse) {
+      if (!serverResponse)
+        return;
+      var data = eval('(' + serverResponse + ')');
+      var row = Element.previous(this.regionElement.parentNode, 0);
+      var reqLabel = Element.select(row, '.required');
+      // Set regions and refresh controls
+      // We use a pair of 'region' and 'region_id' to properly submit data:
+      // manually entered text goes in 'region' and selected option id goes in 'region_id'
+      var regionHtmlName = this.regionElement.name;
+      var regionIdHtmlName = regionHtmlName.replace(/region/, 'region_id');
+      var regionHtmlId = this.regionElement.id;
+      var regionIdHtmlId = regionHtmlId.replace(/region/, 'region_id');
+      var newInputId = null; // id of imput that was added to a page – filled below
+
+      if (data.length) {
+      // Create visible selectbox 'region_id' and hidden 'region'
+        var html = ' <select name="' + regionIdHtmlName + '" id="' + regionIdHtmlId + '" class="entry-select" title="' + this.regionElement.title + '" >';
+        html += ' <option value=""></option>';
+        for (var i in data) {
+          if (data[i].label) {
+            html += ' <option value="' + data[i].value + '"';
+            if (this.regionElement.value && (this.regionElement.value == data[i].value || this.regionElement.value == data[i].label)) {
+              html += ' selected="selected"';
+            }
+            html += '> ' + data[i].label + ' </option>';
+          }
+        }
+        html += ' </select>';
+
+        html += ' <input type="hidden" name="' + regionHtmlName + '" id="' + regionHtmlId + '"/>';
+
+        if (reqLabel) {
+          reqLabel.each(function(item) {
+            Element.show(item)
+          });
+        }
+
+        newInputId = regionIdHtmlId;
+      } else {
+        // Create visible text input 'region' and hidden 'region_id'
+        var html = ' <input type="text" name="' + regionHtmlName + '" id="' + regionHtmlId + '" class="input-text" title="' + this.regionElement.title + '" />';
+        html += ' <input type="hidden" name="' + regionIdHtmlName + '" id="' + regionIdHtmlId + '"/>';
+
+        if (reqLabel) {
+          reqLabel.each(function(item) {
+            Element.hide(item);
+          });
+        }
+
+        newInputId = regionHtmlId;
+      }
+
+      var parentNode = this.regionElement.parentNode;
+      parentNode.innerHTML = html;
+      this.regionElement = $(regionHtmlId);
+      // Updating in address info
+      var newInput = $(newInputId);
+      Event.observe(newInput, 'change', this.onItemFormFieldChange); // Restore observing to update address info
+  
+      var activeElementId = regionHtmlId;
+      if (('select' == $(regionIdHtmlId).tagName.toLowerCase()) && regionIdHtmlId) {
+        activeElementId = regionIdHtmlId;
+      }
+      this._checkRegionRequired([$(regionHtmlId), $(regionIdHtmlId)], activeElementId);
+    },
+    _checkRegionRequired: function(elements, activeElementId)
+    {
+      var label, wildCard;
+      var that = this;
+
+      var regionRequired = this.requiredStateForCountries.indexOf(this.countryEl.value) >= 0;
+      elements.each(function(currentElement) {
+        Validation.reset(currentElement);
+        label = $$('label[for="' + currentElement.id + '"]')[0];
+        if (label) {
+          wildCard = label.down('em') || label.down('span.required');
+          if (!that.showAllRegions) {
+            if (regionRequired) {
+              label.up('tr').show();
+            } else {
+              label.up('tr').hide();
+            }
+          }
+        }
+
+        if (label && wildCard) {
+          if (!regionRequired) {
+            wildCard.hide();
+          } else {
+            wildCard.show();
+          }
+        }
+
+        if (!regionRequired) {
+          if (currentElement.hasClassName('required-entry')) {
+            currentElement.removeClassName('required-entry');
+          }
+          if ('select' == currentElement.tagName.toLowerCase() &&
+                  currentElement.hasClassName('validate-select')
+                  ) {
+            currentElement.removeClassName('validate-select');
+          }
+        } else if (activeElementId == currentElement.id) {
+          if (!currentElement.hasClassName('required-entry')) {
+            currentElement.addClassName('required-entry');
+          }
+          if ('select' == currentElement.tagName.toLowerCase() &&
+                  !currentElement.hasClassName('validate-select')
+                  ) {
+            currentElement.addClassName('validate-select');
+          }
+        }
+      });
+    }
+  }
+
+  Addresses = new addressesModel();
+//]]>
+</script>
