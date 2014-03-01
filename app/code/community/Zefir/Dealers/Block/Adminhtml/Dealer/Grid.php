@@ -18,6 +18,7 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Grid extends Mage_Adminhtml_Block_Wid
 
   protected function _prepareCollection() {
     $collection = Mage::getModel('zefir_dealers/dealer')->getCollection();
+    //$collection->addExpressionFieldToSelect('address', 'CONCAT(street, " ", city, " ", country_id)');
     $this->setCollection($collection);
     return parent::_prepareCollection();
   }
@@ -50,6 +51,8 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Grid extends Mage_Adminhtml_Block_Wid
                  )
          )
     ));
+    
+    Mage::dispatchEvent('zefir_dealers_grid_prepare_massaction', array('grid' => $this));
     return $this;
   }
 
@@ -75,10 +78,35 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Grid extends Mage_Adminhtml_Block_Wid
         'width' => '150px',
         'index' => 'dealer_name',
     ));
+    $this->addColumn('street', array(
+        'header' => Mage::helper('zefir_dealers')->__('Street'),
+        'align' => 'left',
+        'width' => '75px',
+        'index' => 'street',
+    ));
+    $this->addColumn('city', array(
+        'header' => Mage::helper('zefir_dealers')->__('City'),
+        'align' => 'left',
+        'width' => '50px',
+        'index' => 'city',
+    ));
+    $countries = array();
+    foreach(Mage::getResourceModel('directory/country_collection')->toOptionArray(false) as $country) {
+      $countries[$country['value']] = $country['label'];
+    }
+    $this->addColumn('country_id', array(
+        'header' => Mage::helper('zefir_dealers')->__('Country'),
+        'align' => 'left',
+        'width' => '100px',
+        'renderer' => 'zefir_dealers/adminhtml_dealer_renderer_country',
+        'index' => 'country_id',
+        'type' => 'options',
+        'options' => $countries
+    ));
     $this->addColumn('status', array(
         'header' => Mage::helper('zefir_dealers')->__('Status'),
         'align' => 'left',
-        'width' => '150px',
+        'width' => '50px',
         'index' => 'status',
         'type'  => 'options',
         'options' => Mage::getSingleton('zefir_dealers/source_status')->toOptionHash()
@@ -100,6 +128,7 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Grid extends Mage_Adminhtml_Block_Wid
         )
     ));
 
+    Mage::dispatchEvent('zefir_dealers_grid_prepare_columns', array('grid' => $this));
     return parent::_prepareColumns();
   }
 
