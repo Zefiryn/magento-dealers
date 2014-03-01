@@ -14,8 +14,8 @@ class Zefir_DealerLocator_Helper_Data extends Mage_Core_Helper_Abstract {
    * @return \Zefir_DealerLocator_Helper_Localizator_Abstract
    */
   public function getLocalizator() {
-    
-    return Mage::helper('zefir_locator/localizator_' . Mage::getStoreConfig('dealers/localization/geolocation_service'));
+    $helperClass = 'zefir_locator/localizator_' . Mage::getStoreConfig('dealers/localization/geolocation_service');
+    return Mage::helper($helperClass);    
   }
   
   public function isLocalizatorEnabled() {
