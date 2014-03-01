@@ -76,6 +76,7 @@ class Zefir_Dealers_Adminhtml_DealersController extends Mage_Adminhtml_Controlle
           $postData['dealer_id'] = null;          
         }
         $dealer = Mage::getModel('zefir_dealers/dealer');
+        Mage::log($postData);
         $dealer->setData($postData)
                 ->save();
         Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('zefir_dealers')->__('Dealer was successfully saved'));

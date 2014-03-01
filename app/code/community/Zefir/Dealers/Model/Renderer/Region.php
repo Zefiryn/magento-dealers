@@ -52,7 +52,7 @@ class Zefir_Dealers_Model_Renderer_Region implements Varien_Data_Form_Element_Re
         if ($country = $element->getForm()->getElement('country_id')) {
             $countryId = $country->getValue();
         }
-
+        
         $regionCollection = false;
         if ($countryId) {
             if (!isset(self::$_regionCollections[$countryId])) {

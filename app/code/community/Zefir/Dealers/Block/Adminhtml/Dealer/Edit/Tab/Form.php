@@ -62,19 +62,29 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Form extends Mage_Adminhtml_
         'required' => true,
         'name' => 'zipcode',
     ));
+    
+    $isRequired = Mage::helper('directory')->isRegionRequired(Mage::registry('dealer_data')->getCountryId());
     $addresFieldset->addField('region', 'text', array(
         'label' => Mage::helper('zefir_dealers')->__('State/Province'),
         'class' => '',
-        'required' => true,
-        'renderer' => 'zefir_dealers/renderer_region',
+        'required' => $isRequired,
         'name' => 'region',
     ));
+    /**
+     * addField method set default renderer. We need to override it after field is created
+     */
+    $form->getElement('region')->setRenderer(Mage::getModel('zefir_dealers/renderer_region'));
+        
     $addresFieldset->addField('region_id', 'hidden', array(
         'label' => Mage::helper('zefir_dealers')->__('State/Province'),
         'class' => '',
         'required' => false,
         'name' => 'region_id',
     ));
+    $regionElement = $form->getElement('region_id');
+    if ($regionElement) {
+      $regionElement->setNoDisplay(true);
+    }
     $addresFieldset->addField('country_id', 'select', array(
         'label' => Mage::helper('zefir_dealers')->__('Country'),
         'class' => 'input-text required-entry countries',
