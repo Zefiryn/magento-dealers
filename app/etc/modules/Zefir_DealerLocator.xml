@@ -1,0 +1,11 @@
+<config>
+  <modules>
+    <Zefir_DealerLocator>
+      <active>true</active>
+      <codePool>community</codePool>
+      <depends>
+        <Zefir_Dealers />
+      </depends>
+    </Zefir_DealerLocator>
+  </modules>
+</config>

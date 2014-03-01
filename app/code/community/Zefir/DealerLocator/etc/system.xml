@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<config>
+  <sections>
+    <dealers>
+      <tab>sales</tab>
+      <label>Dealers Settings</label>
+      <frontend_type>text</frontend_type>
+      <sort_order>340</sort_order>
+      <show_in_default>1</show_in_default>
+      <show_in_website>1</show_in_website>
+      <show_in_store>1</show_in_store>
+      <groups>
+        <localization>
+          <label>Geo-Localization</label>
+          <frontend_type>text</frontend_type>
+          <sort_order>10</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>0</show_in_website>
+          <show_in_store>0</show_in_store>
+          <expanded>1</expanded>
+          <fields>
+            <geolocation_enable>
+              <label>Enable Geolocation Service</label>
+              <frontend_type>select</frontend_type>
+              <source_model>adminhtml/system_config_source_yesno</source_model>
+              <sort_order>10</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>0</show_in_website>
+              <show_in_store>0</show_in_store>
+              <comment>Enable in order to use 3rd party geolocation services.</comment>
+            </geolocation_enable>  
+            <geolocation_service>
+              <label>Localization Service</label>
+              <frontend_type>select</frontend_type>
+              <source_model>zefir_locator/source_geoservice</source_model>
+              <sort_order>20</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>0</show_in_website>
+              <show_in_store>0</show_in_store>
+              <comment>Make sure to comply with the service license before using it.</comment>
+            </geolocation_service>
+          </fields>          
+        </localization>
+        <geonames>
+          <label>Geonames.org</label>
+          <frontend_type>text</frontend_type>
+          <sort_order>20</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>1</show_in_store>
+          <expanded>1</expanded>
+          <fields>
+            <username>
+              <label>Geonames.org Username</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>10</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>0</show_in_website>
+              <show_in_store>0</show_in_store>
+            </username>
+          </fields>
+        </geonames>
+      </groups>
+    </dealers>
+  </sections>    
+</config>
