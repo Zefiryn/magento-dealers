@@ -71,14 +71,21 @@ class Zefir_Dealers_Adminhtml_DealersController extends Mage_Adminhtml_Controlle
     if ($this->getRequest()->getPost()) {
       try {
         $postData = $this->getRequest()->getPost();
+        
         if ($postData['dealer_id'] == '') {
           //empty string won't save new dealer
           $postData['dealer_id'] = null;          
         }
         $dealer = Mage::getModel('zefir_dealers/dealer');
-        Mage::log($postData);
         $dealer->setData($postData)
                 ->save();
+        
+        //save dealer products
+        $links = $this->getRequest()->getPost('links');
+        if ($links && array_key_exists('products', $links)) {
+          $dealer->saveProducts(Mage::helper('adminhtml/js')->decodeGridSerializedInput($links['products']));
+        }
+        
         Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('zefir_dealers')->__('Dealer was successfully saved'));
         Mage::getSingleton('adminhtml/session')->setDealerData(false);
 
@@ -169,5 +176,24 @@ class Zefir_Dealers_Adminhtml_DealersController extends Mage_Adminhtml_Controlle
             $this->getLayout()->createBlock('zefir_dealers/adminhtml_dealer_grid')->toHtml()
     );
   }
+  
+  /**
+   * Reload grid in dealer edit product tab form
+   */
+  public function productstabAction()
+	{
+		$this->loadLayout();
+		$this->getLayout()->getBlock('products.grid')
+			->setProducts($this->getRequest()->getPost('dealer_products'));
+		$this->renderLayout();
+	}
+  
+  public function productsgridAction()
+	{
+		$this->loadLayout();
+		$this->getLayout()->getBlock('products.grid')
+			->setProducts($this->getRequest()->getPost('article_products'));
+		$this->renderLayout();
+	}
 
 }

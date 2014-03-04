@@ -15,7 +15,7 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit extends Mage_Adminhtml_Block_Wid
         $this->_controller = 'adminhtml_dealer';
  
         $this->_updateButton('save', 'label', Mage::helper('zefir_dealers')->__('Save Dealer'));
-        $this->_updateButton('delete', 'label', Mage::helper('zefir_dealers')->__('Delete Delaer'));
+        $this->_updateButton('delete', 'label', Mage::helper('zefir_dealers')->__('Delete Dealer'));
     }
  
     public function getHeaderText()
@@ -23,7 +23,7 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit extends Mage_Adminhtml_Block_Wid
         if( Mage::registry('dealer_data') && Mage::registry('dealer_data')->getId() ) {
             return Mage::helper('zefir_dealers')->__("Edit Dealer '%s'", $this->htmlEscape(Mage::registry('dealer_data')->getDealerName()));
         } else {
-            return Mage::helper('zefir_dealers')->__('Add Dealer');
+            return Mage::helper('zefir_dealers')->__('New Dealer');
         }
     }
 }

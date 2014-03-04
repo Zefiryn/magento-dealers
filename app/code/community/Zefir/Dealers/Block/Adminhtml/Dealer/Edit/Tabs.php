@@ -19,6 +19,13 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tabs extends Mage_Adminhtml_Bloc
         'title' => Mage::helper('zefir_dealers')->__('General Information'),
         'content' => $this->getLayout()->createBlock('zefir_dealers/adminhtml_dealer_edit_tab_form')->toHtml(),
     ));
+    $this->addTab('product_section', array(
+			'label' => Mage::helper('zefir_dealers')->__('Products'),
+			'title' => Mage::helper('zefir_dealers')->__('Products'),
+			'url' => $this->getUrl('*/*/productstab', array('_current' => TRUE)),
+			'class' => 'ajax',
+		));
+
 
     //allow other modules add tabs to the edit page
     Mage::dispatchEvent('zefir_dealer_prepare_form_tabs', array('block' => $this));
