@@ -63,4 +63,33 @@
       </adminhtml>
     </routers>
   </admin>
+  <frontend>
+    <translate>
+      <modules>
+        <zefir_dealers>
+          <files>
+            <default>Zefir_Dealers.csv</default>
+          </files>
+        </zefir_dealers>
+      </modules>
+    </translate>
+  </frontend>
+  <adminhtml>
+    <layout>
+      <updates>
+        <zefir_dealers>
+          <file>zefir/dealers.xml</file>
+        </zefir_dealers>
+      </updates>
+    </layout>
+    <translate>
+      <modules>
+        <zefir_dealers>
+          <files>
+            <default>Zefir_Dealers.csv</default>
+          </files>
+        </zefir_dealers>
+      </modules>
+    </translate>
+  </adminhtml>
 </config>
