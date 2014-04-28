@@ -76,6 +76,9 @@ class Zefir_Dealers_Adminhtml_DealersController extends Mage_Adminhtml_Controlle
           //empty string won't save new dealer
           $postData['dealer_id'] = null;          
         }
+        /**
+         * @var Zefir_Dealers_Model_Dealer $dealer
+         */
         $dealer = Mage::getModel('zefir_dealers/dealer');
         $dealer->setData($postData)
                 ->save();

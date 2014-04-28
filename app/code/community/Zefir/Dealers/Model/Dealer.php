@@ -42,9 +42,10 @@ class Zefir_Dealers_Model_Dealer extends Mage_Core_Model_Abstract {
   
   /**
    * Save dealer products
+   * 
    * Argument is an array with the following structure
    * array( 
-   *    [product_id] => array( [is_in_stock] => 1|0 ),
+   *    [product_id] => array( [is_in_stock] => 1|0|null ),
    *    ...
    * )
    * 
@@ -52,6 +53,16 @@ class Zefir_Dealers_Model_Dealer extends Mage_Core_Model_Abstract {
    * @param array $links
    */
   public function saveProducts($links) {
+    foreach($links as $product_id => $stock) {
+      $values = array(
+                    'dealer_id' => $this->getId(), 
+                    'product_id' => $product_id, 
+                    'in_stock' => $stock['is_in_stock'] != '' ? $stock['is_in_stock'] : null
+                  );
+      $link = Mage::getModel('zefir_dealers/product_link')->setData($values)->save();
+      unset($link); //free memory; there might be many products here
+    }
+    
     return $this;
   }
     

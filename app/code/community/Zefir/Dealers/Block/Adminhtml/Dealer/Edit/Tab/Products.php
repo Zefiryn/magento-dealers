@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author  Zefiryn
  * @package Zefir_Dealers
@@ -7,11 +6,14 @@
  */
 class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Products extends Mage_Adminhtml_Block_Widget_Grid {
 
+  protected $_selectedProducts;
+  
   public function __construct() {
     parent::__construct();
     $this->setId('products_grid');
     $this->setUseAjax(TRUE);
     $this->setDefaultSort('entity_id');
+    $this->setDefaultFilter(array('in_products'=>1));
     $this->setSaveParametersInSession(FALSE);
   }
 
@@ -38,8 +40,9 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Products extends Mage_Adminh
             ->addAttributeToSelect('sku')
             ->addAttributeToSelect('name')
             ->addAttributeToSelect('attribute_set_id')
-            ->addAttributeToSelect('type_id');
-
+            ->addAttributeToSelect('type_id')
+            ->joinTable(array('link' => 'zefir_dealers/product_link'), 'product_id = entity_id', array('is_in_stock' => 'in_stock'), null, 'left');
+    Mage::log($collection->getSelect()->__toString());
     $this->setCollection($collection);
     return parent::_prepareCollection();
   }
@@ -80,19 +83,19 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Products extends Mage_Adminh
         'options' => Mage::getSingleton('catalog/product_type')->getOptionArray()
     ));
 
-    $stockOptions = array();
+    $stockOptions = array(null => '');
     foreach (Mage::getSingleton('cataloginventory/source_stock')->toOptionArray() as $option) {
       $stockOptions[$option['value']] = $option['label'];
     }
 
     $this->addColumn('is_in_stock', array(
         'header' => Mage::helper('cataloginventory')->__('Stock'),
-        'width' => '60px',
+        'width' => '90px',
         'index' => 'is_in_stock',
         'type' => 'select',
         'options' => $stockOptions,
-        'editable' => TRUE,
-        'edit_only'	=> TRUE
+        'editable'  => true,
+        'edit_only' => true
     ));
 
 
@@ -106,10 +109,10 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Products extends Mage_Adminh
     return $this->getUrl('*/*/productsgrid', array('_current' => TRUE));
   }
 
-  public function getRowUrl($item) {
-    return '#';
-  }
-
+  /**
+   * Get currently selected products
+   * @return array
+   */
   protected function _getSelectedProducts() {   // Used in grid to return selected customers values.
     $products = $this->getProducts();
     if (!is_array($products)) {
@@ -118,12 +121,23 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Products extends Mage_Adminh
     return $products;
   }
 
+  /**
+   * Get dealer products from the database
+   * 
+   * @return array
+   */
   public function getSelectedProducts() {
+    
+    if (null === $this->_selectedProducts) {
     $dealer_id = $this->getRequest()->getParam('id');
-    $dealer = Mage::getModel('zefir_dealers/dealer')->load($dealer_id);
-
-    $arr = array();
-    return $arr;
+    $dealerProducts = Mage::getModel('zefir_dealers/product_link')->getDealerProducts($dealer_id);
+    $products = array();
+    foreach($dealerProducts as $link) {      
+      $products[$link->getProductId()] = array('is_in_stock' => $link->getInStock());
+    }
+    $this->_selectedProducts = $products;
+    }
+    return $this->_selectedProducts;
   }
 
 }
