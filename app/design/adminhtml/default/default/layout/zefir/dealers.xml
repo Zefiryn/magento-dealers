@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+  
+  <adminhtml_dealers_edit>
+    <reference name="head">
+      <action method="addJs">
+        <file>zefir/gridfix.js</file>
+      </action>
+    </reference>
+  </adminhtml_dealers_edit>
+  
+  <!-- dealer edit products tab (with serializer) -->
+  <adminhtml_dealers_productstab>
+    <block type="core/text_list" name="root" output="toHtml">
+      <block type="zefir_dealers/adminhtml_dealer_edit_tab_products" name="products.grid"/>
+      <block type="adminhtml/widget_grid_serializer" name="grid_serializer">
+        <reference name="grid_serializer">
+          <action method="initSerializerBlock">
+            <grid_block_name>products.grid</grid_block_name>
+            <data_callback>getSelectedProducts</data_callback>
+            <hidden_input_name>links[products]</hidden_input_name>
+            <reload_param_name>dealer_products</reload_param_name>
+          </action>
+          <action method="addColumnInputName">
+            <input_name>is_in_stock</input_name>
+          </action>
+        </reference>
+      </block>
+    </block>
+  </adminhtml_dealers_productstab>
+
+  <!-- products grid (no serializer) -->
+	<adminhtml_dealers_productsgrid>
+		<block type="core/text_list" name="root" output="toHtml">
+			<block type="zefir_dealers/adminhtml_dealer_edit_tab_products" name="products.grid"/>
+		</block>
+	</adminhtml_dealers_productsgrid>
+</layout>
