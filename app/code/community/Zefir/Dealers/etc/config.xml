@@ -2,7 +2,7 @@
 <config>
   <modules>
     <Zefir_Dealers>
-      <version>0.1.2</version>
+      <version>0.1.3</version>
     </Zefir_Dealers>
   </modules>
   <global>
@@ -20,6 +20,9 @@
           <product_link>
             <table>zefir_dealer_product_link</table>
           </product_link>
+          <gallery>
+            <table>zefir_dealer_gallery</table>
+          </gallery>
         </entities>
       </zefir_dealer_resource>
     </models>

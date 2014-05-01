@@ -83,12 +83,6 @@ class Zefir_Dealers_Adminhtml_DealersController extends Mage_Adminhtml_Controlle
         $dealer->setData($postData)
                 ->save();
         
-        //save dealer products
-        $links = $this->getRequest()->getPost('links');
-        if ($links && array_key_exists('products', $links)) {
-          $dealer->saveProducts(Mage::helper('adminhtml/js')->decodeGridSerializedInput($links['products']));
-        }
-        
         Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('zefir_dealers')->__('Dealer was successfully saved'));
         Mage::getSingleton('adminhtml/session')->setDealerData(false);
 
@@ -198,5 +192,43 @@ class Zefir_Dealers_Adminhtml_DealersController extends Mage_Adminhtml_Controlle
 			->setProducts($this->getRequest()->getPost('article_products'));
 		$this->renderLayout();
 	}
+
+  /**
+   * Process dealer gallery file uploads
+   */
+  public function uploadAction() {
+    try {
+      $uploader = new Mage_Core_Model_File_Uploader('image');
+      $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'gif', 'png'));
+      $uploader->addValidateCallback('dealer_gallery_image', Mage::helper('catalog/image'), 'validateUploadFile');
+      $uploader->setAllowRenameFiles(true);
+      $uploader->setFilesDispersion(true);
+      $result = $uploader->save(
+        Mage::getSingleton('zefir_dealers/media_config')->getBaseTmpMediaPath()
+      );
+
+      /**
+       * Workaround for prototype 1.7 methods "isJSON", "evalJSON" on Windows OS
+       */
+      $result['tmp_name'] = str_replace(DS, "/", $result['tmp_name']);
+      $result['path'] = str_replace(DS, "/", $result['path']);
+
+      $result['url'] = Mage::getSingleton('zefir_dealers/media_config')->getTmpMediaUrl($result['file']);
+      $result['file'] = $result['file'] . '.tmp';
+      $result['cookie'] = array(
+        'name' => session_name(),
+        'value' => $this->_getSession()->getSessionId(),
+        'lifetime' => $this->_getSession()->getCookieLifetime(),
+        'path' => $this->_getSession()->getCookiePath(),
+        'domain' => $this->_getSession()->getCookieDomain()
+      );
+    } catch (Exception $e) {
+      $result = array(
+        'error' => $e->getMessage(),
+        'errorcode' => $e->getCode());
+    }
+
+    $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
+  }
 
 }

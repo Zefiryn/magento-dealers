@@ -3,9 +3,8 @@
   
   <adminhtml_dealers_edit>
     <reference name="head">
-      <action method="addJs">
-        <file>zefir/gridfix.js</file>
-      </action>
+      <action method="addJs"><file>zefir/gridfix.js</file></action>
+      <action method="addJs"><file>zefir/admin-gallery.js</file></action>
     </reference>
   </adminhtml_dealers_edit>
   

@@ -1,0 +1,73 @@
+<?php
+/**
+ * Template for block Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Gallery_Grid
+ */
+?>
+<?php
+$_block = $this;
+$blockId = $_block->getHtmlId();
+/* @var $_block Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Gallery_Grid */
+?>
+<div id="<?php echo $blockId  ?>" >
+  <div class="grid">
+    <table cellspacing="0" class="data border dealer-gallery" id="<?php echo $blockId ?>_grid" width="100%">
+      <col width="150" />
+      <col width="150" />
+      <col width="350" />
+      <col width="100" />
+      <col width="1" />
+      <col width="1" />
+      <thead>
+      <tr class="headings">
+        <th><?php echo Mage::helper('zefir_dealers')->__('Image') ?></th>
+        <th><?php echo Mage::helper('zefir_dealers')->__('Title') ?></th>
+        <th><?php echo Mage::helper('zefir_dealers')->__('Description') ?></th>
+        <th><?php echo Mage::helper('zefir_dealers')->__('Sort Order') ?></th>
+        <th><?php echo Mage::helper('zefir_dealers')->__('Exclude') ?></th>
+        <th class="last"><?php echo Mage::helper('zefir_dealers')->__('Remove') ?></th>
+      </tr>
+      </thead>
+      <tbody id="<?php echo $_block->getHtmlId() ?>_list">
+      <tr id="<?php echo $_block->getHtmlId() ?>_template" class="template no-display">
+        <td class="cell-image">
+          <div class="place-holder" onmouseover="gallery.loadImage('__file__')"><span><?php echo Mage::helper('catalog')->__('Roll Over for preview') ?></span></div>
+          <img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="150" style="display:none;" alt="" />
+        </td>
+        <td class="cell-title">
+          <input type="text" class="input-text" onkeyup="gallery.updateImage('__file__')" onchange="gallery.updateImage('__file__')" />
+        </td>
+        <td class="cell-description">
+          <input type="text" class="input-text" onkeyup="gallery.updateImage('__file__')" onchange="gallery.updateImage('__file__')" />
+        </td>
+        <td class="cell-position">
+          <input type="text" class="input-text validate-number" onkeyup="gallery.updateImage('__file__')" onchange="gallery.updateImage('__file__')" />
+        </td>
+        <td class="cell-disable a-center">
+          <input type="checkbox" onclick="gallery.updateImage('__file__')" />
+        </td>
+        <td class="cell-remove a-center last">
+          <input type="checkbox" onclick="gallery.updateImage('__file__')" />
+        </td>
+      </tr>
+      <tr id="<?php echo $blockId ?>-no-images">
+        <td colspan="6" class="empty-text a-center"><?php echo $this->__('No images found.');?></td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="100" class="last" style="padding:8px">
+          <?php echo $_block->getUploaderHtml() ?>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<input type="hidden" id="<?php echo $blockId  ?>_save" name="<?php echo $blockId; ?>_save[images]" value="<?php echo $_block->escapeHtml($_block->getImagesJson()) ?>" />
+<input type="hidden" id="gallery_block_id" name="gallery[block_id]" value="<?php echo $blockId; ?>" />
+
+<script type="text/javascript">
+  //<![CDATA[
+  window.gallery = new DealerGallery('<?php echo $blockId  ?>', <?php echo $_block->getUploader()->getJsObjectName(); ?>);
+  //]]>
+</script>

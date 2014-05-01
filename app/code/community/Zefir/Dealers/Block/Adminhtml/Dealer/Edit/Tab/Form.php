@@ -9,7 +9,7 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Form extends Mage_Adminhtml_
 
   public function __construct() {
     parent::__construct();
-    $this->setTemplate('zefir/dealers/tab/addressForm.phtml');
+    $this->setTemplate('zefir/dealers/tab/address_form.phtml');
   }
 
   public function getRegionsUrl() {
