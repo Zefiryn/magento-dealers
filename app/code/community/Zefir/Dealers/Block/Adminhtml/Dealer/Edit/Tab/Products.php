@@ -51,6 +51,7 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Products extends Mage_Adminh
     $this->addColumn('in_products', array(
         'header_css_class' => 'a-center',
         'type' => 'checkbox',
+        'field_name' => 'in_products',
         'name' => 'in_products',
         'values' => $this->_getSelectedProducts(),
         'align' => 'center',

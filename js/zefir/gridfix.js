@@ -1,6 +1,6 @@
 varienGrid.prototype.rowMouseClick = function(event) {
   //prevent executing event when clicking on interactive element itself
-  if(['a', 'input', 'select', 'option'].indexOf(Event.element(event).tagName.toLowerCase())!=-1) {
+  if(['a', 'input[type!="checkbox"]', 'select', 'option'].indexOf(Event.element(event).tagName.toLowerCase())!=-1) {
     return;
   }
   
