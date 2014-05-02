@@ -41,6 +41,7 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Products extends Mage_Adminh
             ->addAttributeToSelect('name')
             ->addAttributeToSelect('attribute_set_id')
             ->addAttributeToSelect('type_id')
+            ->addAttributeToFilter('type_id', array('eq' => Mage_Catalog_Model_Product_Type::TYPE_SIMPLE))
             ->joinTable(array('link' => 'zefir_dealers/product_link'), 'product_id = entity_id', array('is_in_stock' => 'in_stock'), null, 'left');
 
     $this->setCollection($collection);
@@ -74,14 +75,6 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Products extends Mage_Adminh
         'header' => Mage::helper('catalog')->__('SKU'),
         'width' => '80px',
         'index' => 'sku'
-    ));
-
-    $this->addColumn('type', array(
-        'header' => Mage::helper('catalog')->__('Type'),
-        'width' => '60px',
-        'index' => 'type_id',
-        'type' => 'options',
-        'options' => Mage::getSingleton('catalog/product_type')->getOptionArray()
     ));
 
     $stockOptions = array(null => '');
