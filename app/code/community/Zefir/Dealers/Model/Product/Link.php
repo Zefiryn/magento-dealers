@@ -37,8 +37,18 @@ class Zefir_Dealers_Model_Product_Link extends Mage_Core_Model_Abstract {
    * @param integer $dealerId
    * @return Zefir_Dealers_Resource_Product_LinkCollection
    */
-  public function getDealerProducts($dealerId) {    
+  public function getProductsForDealer($dealerId) {
     return $this->getCollection()->addFieldToFilter('dealer_id', array('eq' => $dealerId));
+  }
+
+  /**
+   * Get collection of all linked products by dealer id
+   *
+   * @param integer $productId
+   * @return Zefir_Dealers_Resource_Product_LinkCollection
+   */
+  public function getDealersForProduct($productId) {
+    return $this->getCollection()->addFieldToFilter('product_id', array('eq' => $productId));
   }
 
   /**

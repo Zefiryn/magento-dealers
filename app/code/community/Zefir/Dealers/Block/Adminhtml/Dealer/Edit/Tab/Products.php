@@ -124,7 +124,7 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Products extends Mage_Adminh
     
     if (null === $this->_selectedProducts) {
     $dealer_id = $this->getRequest()->getParam('id');
-    $dealerProducts = Mage::getModel('zefir_dealers/product_link')->getDealerProducts($dealer_id);
+    $dealerProducts = Mage::getModel('zefir_dealers/product_link')->getProductsForDealer($dealer_id);
     $products = array();
     foreach($dealerProducts as $link) {      
       $products[$link->getProductId()] = array('is_in_stock' => $link->getInStock());

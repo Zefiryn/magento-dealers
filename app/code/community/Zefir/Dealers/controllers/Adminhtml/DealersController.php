@@ -175,7 +175,7 @@ class Zefir_Dealers_Adminhtml_DealersController extends Mage_Adminhtml_Controlle
   }
   
   /**
-   * Reload grid in dealer edit product tab form
+   * Generate tab with grid in dealer edit product tab form
    */
   public function productstabAction()
 	{
@@ -184,12 +184,15 @@ class Zefir_Dealers_Adminhtml_DealersController extends Mage_Adminhtml_Controlle
 			->setProducts($this->getRequest()->getPost('dealer_products'));
 		$this->renderLayout();
 	}
-  
+
+  /**
+   * Generate products grid for dealer edit form
+   */
   public function productsgridAction()
 	{
 		$this->loadLayout();
 		$this->getLayout()->getBlock('products.grid')
-			->setProducts($this->getRequest()->getPost('article_products'));
+			->setProducts($this->getRequest()->getPost('dealer_products'));
 		$this->renderLayout();
 	}
 
