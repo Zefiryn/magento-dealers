@@ -42,7 +42,7 @@ class Zefir_Dealers_Block_Adminhtml_Dealer_Edit_Tab_Products extends Mage_Adminh
             ->addAttributeToSelect('attribute_set_id')
             ->addAttributeToSelect('type_id')
             ->joinTable(array('link' => 'zefir_dealers/product_link'), 'product_id = entity_id', array('is_in_stock' => 'in_stock'), null, 'left');
-    Mage::log($collection->getSelect()->__toString());
+
     $this->setCollection($collection);
     return parent::_prepareCollection();
   }

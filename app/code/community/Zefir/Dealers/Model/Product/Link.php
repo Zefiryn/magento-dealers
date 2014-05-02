@@ -40,4 +40,25 @@ class Zefir_Dealers_Model_Product_Link extends Mage_Core_Model_Abstract {
   public function getDealerProducts($dealerId) {    
     return $this->getCollection()->addFieldToFilter('dealer_id', array('eq' => $dealerId));
   }
+
+  /**
+   * Links should be a serialized by grid serializer array with the following structure
+   * array(
+   *    [product_id] => array( [is_in_stock] => 1|0|null ),
+   *    ...
+   * )
+   *
+   * @param Zefir_Dealers_Model_Dealer $dealer
+   * @return Zefir_Dealers_Model_Product_Link $this
+   */
+  public function saveDealerProducts(Zefir_Dealers_Model_Dealer $dealer) {
+    $links = $dealer->getLinks();
+
+    if (null !== $links) {
+      $links = Mage::helper('adminhtml/js')->decodeGridSerializedInput($links['products']);
+      $this->getResource()->saveDealerProducts($dealer, $links);
+    }
+    return $this;
+
+  }
 }
