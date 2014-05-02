@@ -28,6 +28,11 @@ class Zefir_Dealers_Model_Dealer extends Mage_Core_Model_Abstract {
   protected $_linkInstance;
 
   /**
+   * @var Zefir_Dealers_Model_Gallery
+   */
+  protected $_galleryInstance;
+
+  /**
    * Constructor function
    *
    * @return void
@@ -69,31 +74,7 @@ class Zefir_Dealers_Model_Dealer extends Mage_Core_Model_Abstract {
    * @return Zefir_Dealers_Model_Dealer
    */
   protected function _saveGallery() {
-
-    $galleryPost = $this->getGallery();
-    if (array_key_exists('block_id', $galleryPost)) {
-      $prefix = $galleryPost['block_id'];
-      $images = $this->getData($prefix . '_save');
-      $data = json_decode($images['images'], true);
-      foreach ($data as $image) {
-        $imageObject = Mage::getModel('zefir_dealers/gallery');
-        if ($image['removed']) {
-          $imageObject->removeImage($image);
-          continue;
-        } elseif (!array_key_exists('image_id', $image)) {
-          $image['file'] = $imageObject->copyImage($image);
-        }
-        try {
-          $image['dealer_id'] = $this->getId();
-          $imageObject->setData($image);
-          $imageObject->save();
-        }
-        catch (Exception $e) {
-          Mage::logException($e);
-        }
-      }
-    }
-    
+    $this->getGalleryInstance()->saveDealerGallery($this);
     return $this;
   }
 
@@ -108,6 +89,18 @@ class Zefir_Dealers_Model_Dealer extends Mage_Core_Model_Abstract {
       $this->_linkInstance = Mage::getModel('zefir_dealers/product_link');
     }
     return $this->_linkInstance;
+  }
+
+  /**
+   * Get instance of gallery model
+   *
+   * @return false|Mage_Core_Model_Abstract|Zefir_Dealers_Model_Gallery
+   */
+  public function getGalleryInstance() {
+    if (null === $this->_galleryInstance) {
+      $this->_galleryInstance = Mage::getModel('zefir_dealers/gallery');
+    }
+    return $this->_galleryInstance;
   }
 
 

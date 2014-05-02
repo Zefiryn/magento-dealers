@@ -39,6 +39,32 @@ class Zefir_Dealers_Model_Gallery extends Mage_Core_Model_Abstract {
     return $this->_getConfig()->getMediaUrl($this->getFile());
   }
 
+  public function saveDealerGallery(Zefir_Dealers_Model_Dealer $dealer) {
+    $galleryPost = $dealer->getGallery();
+    if (array_key_exists('block_id', $galleryPost)) {
+      $prefix = $galleryPost['block_id'];
+      $images = $dealer->getData($prefix . '_save');
+      $data = json_decode($images['images'], true);
+      foreach ($data as $image) {
+        if ($image['removed']) {
+          $this->removeImage($image);
+          continue;
+        } elseif (!array_key_exists('image_id', $image)) {
+          $image['file'] = $this->copyImage($image);
+        }
+        try {
+          $image['dealer_id'] = $dealer->getId();
+          $imageObject = Mage::getModel(get_class($this));
+          $imageObject->setData($image);
+          $imageObject->save();
+        }
+        catch (Exception $e) {
+          Mage::logException($e);
+        }
+      }
+    }
+  }
+
   /**
    * Remove image
    *
