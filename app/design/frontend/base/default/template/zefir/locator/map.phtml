@@ -1,0 +1,14 @@
+<div id="google-map-canvas"></div>
+
+
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=<? echo $this->getApiKey();?>&sensor=FALSE"></script>
+<script type="text/javascript">
+  function initialize() {
+    var mapOptions = {
+      center: new google.maps.LatLng(<?php echo $this->getMapCenterLat();?>, <?php echo $this->getMapCenterLng();?>),
+      zoom: 8
+    };
+    var map = new google.maps.Map(document.getElementById("google-map-canvas"), mapOptions);
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>

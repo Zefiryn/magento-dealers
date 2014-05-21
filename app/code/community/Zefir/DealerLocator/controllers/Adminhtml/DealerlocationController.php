@@ -3,7 +3,7 @@
  * Geo Localization controller
  * 
  * @author  Zefiryn
- * @package Zefir_DealerLocate
+ * @package Zefir_DealerLocator
  * @license http://www.mozilla.org/MPL/2.0/  Mozilla Public License 2.0 (MPL)
  */
 

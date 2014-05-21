@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    design
+ * @package     Zefir_DealerLocator
+ * @license http://www.mozilla.org/MPL/2.0/  Mozilla Public License 2.0 (MPL)
+ */
+-->
+<layout version="0.1.0">
+
+  <dealers_index_index>
+    <reference name="head">
+      <action method="addItem"><type>skin_css</type><file>css/zefir/google-maps.css</file></action>
+    </reference>
+    <reference name="content">
+      <block type="zefir_locator/map" name="map.list" template="zefir/locator/map.phtml" />
+    </reference>
+  </dealers_index_index>
+
+</layout>

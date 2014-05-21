@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    design
+ * @package     Zefir_Dealers
+ * @license http://www.mozilla.org/MPL/2.0/  Mozilla Public License 2.0 (MPL)
+ */
+-->
+<layout version="0.1.0">
+
+  <dealers_index_index>
+    <reference name="root">
+      <action method="setTemplate"><file>page/1column.phtml</file></action>
+    </reference>
+    <reference name="content">
+      <block type="zefir_dealers/list" name="dealers.list" template="zefir/dealers/list.phtml">
+      </block>
+    </reference>
+  </dealers_index_index>
+
+</layout>

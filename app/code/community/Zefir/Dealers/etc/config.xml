@@ -70,6 +70,22 @@
     </routers>
   </admin>
   <frontend>
+    <layout>
+      <updates>
+        <zefir_dealers>
+          <file>zefir/dealers.xml</file>
+        </zefir_dealers>
+      </updates>
+    </layout>
+    <routers>
+      <dealers>
+        <use>dealers</use>
+        <args>
+          <module>Zefir_Dealers</module>
+          <frontName>dealers</frontName>
+        </args>
+      </dealers>
+    </routers>
     <translate>
       <modules>
         <zefir_dealers>
@@ -98,4 +114,14 @@
       </modules>
     </translate>
   </adminhtml>
+  <default>
+    <web>
+      <routers>
+        <dealers>
+          <area>frontend</area>
+          <class>Zefir_Dealers_Controller_Router</class>
+        </dealers>
+      </routers>
+    </web>
+  </default>
 </config>

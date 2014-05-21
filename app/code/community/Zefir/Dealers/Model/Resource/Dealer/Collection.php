@@ -17,6 +17,18 @@ class Zefir_Dealers_Model_Resource_Dealer_Collection extends Mage_Core_Model_Res
     parent::_construct();
   }
 
+
+  /**
+   * Add status field filter to dealer collection
+   *
+   * @param int $status
+   * @return Zefir_Dealers_Model_Resource_Dealer_Collection $this
+   */
+  public function addStatusFilter($status = Zefir_Dealers_Model_Source_Status::ZEFIR_DEALER_STATUS_ENABLED) {
+    $this->addFieldToFilter('status', array('eq' => $status));
+    return $this;
+  }
+
   /**
    * Join table to collection select
    *

@@ -43,6 +43,15 @@
       </zefir_locator>
     </blocks>    
   </global>
+  <frontend>
+    <layout>
+      <updates>
+        <zefir_dealerslocator>
+          <file>zefir/dealers-locator.xml</file>
+        </zefir_dealerslocator>
+      </updates>
+    </layout>
+  </frontend>
   <admin>
     <routers>
       <adminhtml>
