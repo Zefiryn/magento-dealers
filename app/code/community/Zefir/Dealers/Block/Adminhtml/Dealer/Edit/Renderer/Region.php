@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Dealer address region field renderer
  *
@@ -8,8 +9,7 @@
  */
 class Zefir_Dealers_Block_Adminhtml_Delaer_Edit_Renderer_Region
     extends Mage_Adminhtml_Block_Abstract
-    implements Varien_Data_Form_Element_Renderer_Interface
-{
+    implements Varien_Data_Form_Element_Renderer_Interface {
     /**
      * Factory instance
      *
@@ -22,8 +22,7 @@ class Zefir_Dealers_Block_Adminhtml_Delaer_Edit_Renderer_Region
      *
      * @param array $args
      */
-    public function __construct(array $args = array())
-    {
+    public function __construct(array $args = array()) {
         $this->_factory = !empty($args['factory']) ? $args['factory'] : Mage::getSingleton('core/factory');
     }
 
@@ -33,12 +32,12 @@ class Zefir_Dealers_Block_Adminhtml_Delaer_Edit_Renderer_Region
      * @param Varien_Data_Form_Element_Abstract $element
      * @return string
      */
-    public function render(Varien_Data_Form_Element_Abstract $element)
-    {
+    public function render(Varien_Data_Form_Element_Abstract $element) {
         $country = $element->getForm()->getElement('country_id');
-        if (!is_null($country)) {
+        if(!is_null($country)) {
             $countryId = $country->getValue();
-        } else {
+        }
+        else {
             return $element->getDefaultHtml();
         }
 
@@ -59,9 +58,9 @@ class Zefir_Dealers_Block_Adminhtml_Delaer_Edit_Renderer_Region
         $html .= '</select>';
 
         $html .= '<script type="text/javascript">' . "\n";
-        $html .= '$("' . $selectId . '").setAttribute("defaultValue", "' . $regionId.'");' . "\n";
+        $html .= '$("' . $selectId . '").setAttribute("defaultValue", "' . $regionId . '");' . "\n";
         $html .= 'new regionUpdater("' . $country->getHtmlId() . '", "' . $element->getHtmlId() . '", "' .
-            $selectId . '", ' . $this->helper('directory')->getRegionJsonByStore($quoteStoreId).');' . "\n";
+            $selectId . '", ' . $this->helper('directory')->getRegionJsonByStore($quoteStoreId) . ');' . "\n";
         $html .= '</script>' . "\n";
 
         $html .= '</td></tr>' . "\n";

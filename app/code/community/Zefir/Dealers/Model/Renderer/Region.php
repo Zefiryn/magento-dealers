@@ -27,12 +27,11 @@
 /**
  * REgion field renderer
  *
- * @category   Mage
- * @package    Mage_Adminhtml
+ * @category    Mage
+ * @package     Mage_Adminhtml
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Zefir_Dealers_Model_Renderer_Region implements Varien_Data_Form_Element_Renderer_Interface
-{
+class Zefir_Dealers_Model_Renderer_Region implements Varien_Data_Form_Element_Renderer_Interface {
     /**
      * Country region collections
      *
@@ -44,18 +43,17 @@ class Zefir_Dealers_Model_Renderer_Region implements Varien_Data_Form_Element_Re
      */
     static protected $_regionCollections;
 
-    public function render(Varien_Data_Form_Element_Abstract $element)
-    {
-        $html = '<tr>'."\n";
+    public function render(Varien_Data_Form_Element_Abstract $element) {
+        $html = '<tr>' . "\n";
 
         $countryId = false;
-        if ($country = $element->getForm()->getElement('country_id')) {
+        if($country = $element->getForm()->getElement('country_id')) {
             $countryId = $country->getValue();
         }
-        
+
         $regionCollection = false;
-        if ($countryId) {
-            if (!isset(self::$_regionCollections[$countryId])) {
+        if($countryId) {
+            if(!isset(self::$_regionCollections[$countryId])) {
                 self::$_regionCollections[$countryId] = Mage::getModel('directory/country')
                     ->setId($countryId)
                     ->getLoadedRegionCollection()
@@ -67,8 +65,8 @@ class Zefir_Dealers_Model_Renderer_Region implements Varien_Data_Form_Element_Re
         $regionId = intval($element->getForm()->getElement('region_id')->getValue());
 
         $htmlAttributes = $element->getHtmlAttributes();
-        foreach ($htmlAttributes as $key => $attribute) {
-            if ('type' === $attribute) {
+        foreach($htmlAttributes as $key => $attribute) {
+            if('type' === $attribute) {
                 unset($htmlAttributes[$key]);
                 break;
             }
@@ -83,41 +81,43 @@ class Zefir_Dealers_Model_Renderer_Region implements Varien_Data_Form_Element_Re
         $regionHtmlId = $element->getHtmlId();
         $regionIdHtmlId = str_replace('region', 'region_id', $regionHtmlId);
 
-        if ($regionCollection && count($regionCollection) > 0) {
+        if($regionCollection && count($regionCollection) > 0) {
             $elementClass = $element->getClass();
-            $html.= '<td class="label">'.$element->getLabelHtml().'</td>';
-            $html.= '<td class="value">';
+            $html .= '<td class="label">' . $element->getLabelHtml() . '</td>';
+            $html .= '<td class="value">';
 
             $html .= '<select id="' . $regionIdHtmlId . '" name="' . $regionIdHtmlName . '" '
-                 . $element->serialize($htmlAttributes) .'>' . "\n";
-            foreach ($regionCollection as $region) {
-                $selected = ($regionId==$region['value']) ? ' selected="selected"' : '';
-                $value =  is_numeric($region['value'])?(int)$region['value']:"";
-                $html.= '<option value="'.$value.'"' . $selected . '>'
+                . $element->serialize($htmlAttributes) . '>' . "\n";
+            foreach($regionCollection as $region) {
+                $selected = ($regionId == $region['value']) ? ' selected="selected"' : '';
+                $value = is_numeric($region['value']) ? (int)$region['value'] : "";
+                $html .= '<option value="' . $value . '"' . $selected . '>'
                     . Mage::helper('adminhtml')->escapeHtml(Mage::helper('directory')->__($region['label']))
                     . '</option>';
             }
-            $html.= '</select>' . "\n";
+            $html .= '</select>' . "\n";
 
             $html .= '<input type="hidden" name="' . $regionHtmlName . '" id="' . $regionHtmlId . '" value=""/>';
 
-            $html.= '</td>';
+            $html .= '</td>';
             $element->setClass($elementClass);
-        } else {
+        }
+        else {
             $element->setClass('input-text');
-            $html.= '<td class="label"><label for="'.$element->getHtmlId().'">'
+            $html .= '<td class="label"><label for="' . $element->getHtmlId() . '">'
                 . $element->getLabel()
                 . ' <span class="required" style="display:none">*</span></label></td>';
 
             $element->setRequired(false);
-            $html.= '<td class="value">';
+            $html .= '<td class="value">';
             $html .= '<input id="' . $regionHtmlId . '" name="' . $regionHtmlName
                 . '" value="' . $element->getEscapedValue() . '" '
                 . $element->serialize($htmlAttributes) . "/>" . "\n";
             $html .= '<input type="hidden" name="' . $regionIdHtmlName . '" id="' . $regionIdHtmlId . '" value=""/>';
-            $html .= '</td>'."\n";
+            $html .= '</td>' . "\n";
         }
-        $html.= '</tr>'."\n";
+        $html .= '</tr>' . "\n";
+
         return $html;
     }
 }
