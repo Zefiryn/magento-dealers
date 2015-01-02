@@ -3,7 +3,9 @@ app/design/adminhtml/default/default/layout/zefir/*     app/design/adminhtml/def
 app/design/adminhtml/default/default/template/zefir/*   app/design/adminhtml/default/default/template/zefir/
 app/design/frontend/base/default/layout/zefir/*         app/design/frontend/base/default/layout/zefir/
 app/design/frontend/base/default/template/zefir/*       app/design/frontend/base/default/template/zefir/
-etc/modules/Zefir_DealerLocator.xml                     etc/modules/Zefir_ConversionTracking.xml
-etc/modules/Zefir_Dealers.xml                           etc/modules/Zefir_Dealers.xml
+app/etc/modules/Zefir_DealerLocator.xml                 app/etc/modules/Zefir_ConversionTracking.xml
+app/etc/modules/Zefir_Dealers.xml                       app/etc/modules/Zefir_Dealers.xml
+app/locale/en_US/*                                      app/locale/en_US/
+app/locale/pl_PL/*                                      app/locale/pl_PL/
 js/zefir/*                                              js/zefir/
 skin/frontend/default/default/css/zefir/*               skin/frontend/default/default/css/zefir/
